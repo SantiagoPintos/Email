@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using Microsoft.Graph;
+using Microsoft.Identity.Client;
+using Azure.Identity;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +19,38 @@ namespace Email
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GraphServiceClient _clientApp;
+        private static string _clientId = "";
+        private static string[] _scopes = { "User.Read", "Mail.Read" };
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Configura las credenciales del navegador interactivo
+                var interactiveBrowserCredential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
+                {
+                    ClientId = _clientId,
+                    RedirectUri = new Uri("http://localhost")
+                });
+
+                // Inicializa el cliente de Microsoft Graph con las credenciales
+                _clientApp = new GraphServiceClient(interactiveBrowserCredential, _scopes);
+
+                // Navega a la ventana de correos electrónicos
+                EmailsWindow emailsWindow = new EmailsWindow(_clientApp);
+                emailsWindow.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
         }
     }
 }
