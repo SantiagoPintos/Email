@@ -20,8 +20,8 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="0,5">
-                        <TextBlock Text="{Binding Subject}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Sender}" FontStyle="Italic"/>
+                        <TextBlock Text="{Binding Sender.EmailAddress.Name}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Subject}" FontStyle="Italic"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
