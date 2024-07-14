@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace Email
 {
@@ -29,7 +31,17 @@ namespace Email
         {
             InitializeComponent();
             _graphClient = graphClient;
+            InitializeWebView();
             LoadEmails();
+        }
+
+        private async void InitializeWebView()
+        {
+            await BodyWebView.EnsureCoreWebView2Async(null);
+            BodyWebView.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
+            BodyWebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+            BodyWebView.CoreWebView2.Settings.AreHostObjectsAllowed = false;
+            BodyWebView.CoreWebView2.Settings.IsScriptEnabled = false;
         }
 
         private async void LoadEmails()
@@ -67,7 +79,7 @@ namespace Email
                 SenderTextBlock.Text = selectedEmail.Sender.EmailAddress.Address;
                 DateTextBlock.Text = selectedEmail.ReceivedDateTime?.ToString("g");
 
-                BodyWebBrowser.NavigateToString(selectedEmail.Body.Content);
+                BodyWebView.NavigateToString(selectedEmail.Body.Content);
 
                 EmailDetailsGrid.Visibility = Visibility.Visible;
             }

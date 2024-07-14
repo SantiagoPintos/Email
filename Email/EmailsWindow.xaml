@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         xmlns:local="clr-namespace:Email"
         mc:Ignorable="d"
         Title="EmailsWindow" Height="450" Width="800">
@@ -38,7 +39,7 @@
             <TextBlock Grid.Row="0" x:Name="SubjectTextBlock" FontSize="18" FontWeight="Bold" Margin="10,10,10,5"/>
             <TextBlock Grid.Row="1" x:Name="SenderTextBlock" FontStyle="Italic" Margin="10,0,10,5"/>
             <TextBlock Grid.Row="2" x:Name="DateTextBlock" Margin="10,0,10,10"/>
-            <WebBrowser Grid.Row="3" x:Name="BodyWebBrowser" Margin="10"/>
+            <wv2:WebView2 Grid.Row="3" x:Name="BodyWebView" Margin="10"/>
         </Grid>
     </Grid>
 </Window>
