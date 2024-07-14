@@ -20,18 +20,21 @@ namespace Email
     public partial class MainWindow : Window
     {
         private GraphServiceClient _clientApp;
-        private static string _clientId = "";
+        private static string _clientId;
         private static string[] _scopes = { "User.Read", "Mail.Read" };
 
         public MainWindow()
         {
             InitializeComponent();
+            _clientId = App.Configuration["client_id"];
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if(string.IsNullOrEmpty(_clientId)) throw new Exception("Something went wrong: ClientID");
+
                 // Configura las credenciales del navegador interactivo
                 var interactiveBrowserCredential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
                 {
