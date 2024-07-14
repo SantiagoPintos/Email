@@ -38,7 +38,7 @@ namespace Email
                 var messagePage = await _graphClient.Me.MailFolders["Inbox"].Messages
                     .GetAsync((config) =>
                     {
-                        config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime" };
+                        config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body" };
                         config.QueryParameters.Top = 20;
                     });
 
