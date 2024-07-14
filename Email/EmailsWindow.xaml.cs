@@ -53,7 +53,7 @@ namespace Email
                     .GetAsync((config) =>
                     {
                         config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body" };
-                        config.QueryParameters.Top = 20;
+                        config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
                     });
 
                 _emails = messagePage.Value.ToList();
