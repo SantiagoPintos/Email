@@ -54,6 +54,7 @@ namespace Email
                     {
                         config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body" };
                         config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
+                        config.QueryParameters.Top = 50;
                     });
 
                 _emails = messagePage.Value.ToList();
