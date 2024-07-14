@@ -7,6 +7,38 @@
         mc:Ignorable="d"
         Title="EmailsWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="EmailsListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Email list -->
+        <ListBox x:Name="EmailsListBox" Grid.Column="0" 
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 SelectionChanged="EmailsListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,5">
+                        <TextBlock Text="{Binding Subject}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Sender}" FontStyle="Italic"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Email details -->
+        <Grid Grid.Column="1" x:Name="EmailDetailsGrid" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" x:Name="SubjectTextBlock" FontSize="18" FontWeight="Bold" Margin="10,10,10,5"/>
+            <TextBlock Grid.Row="1" x:Name="SenderTextBlock" FontStyle="Italic" Margin="10,0,10,5"/>
+            <TextBlock Grid.Row="2" x:Name="DateTextBlock" Margin="10,0,10,10"/>
+            <WebBrowser Grid.Row="3" x:Name="BodyWebBrowser" Margin="10"/>
+        </Grid>
     </Grid>
 </Window>

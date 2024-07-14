@@ -3,6 +3,7 @@ using Microsoft.Graph.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace Email
     public partial class EmailsWindow : Window
     {
         private GraphServiceClient _graphClient;
+        private List<Message> _emails;
 
         public EmailsWindow(GraphServiceClient graphClient)
         {
@@ -42,29 +44,38 @@ namespace Email
                         config.QueryParameters.Top = 20;
                     });
 
-                List<string> emailSubjects = new List<string>();
-                foreach (var message in messagePage.Value)
-                {
-                    emailSubjects.Add($"{message.Sender.EmailAddress.Name}: {message.Subject}");
-                }
+                _emails = messagePage.Value.ToList();
+                EmailsListBox.ItemsSource = _emails;
 
                 // Verificar si la lista tiene elementos
-                if (emailSubjects.Count > 0)
-                {
-                    MessageBox.Show("Correos electrónicos obtenidos exitosamente.");
-                }
-                else
+                if (_emails.Count <= 0)
                 {
                     MessageBox.Show("No se encontraron correos electrónicos.");
                 }
-
-                // Actualizar la lista de correos electrónicos en la UI
-                EmailsListBox.ItemsSource = emailSubjects;
             }
             catch (ServiceException ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
+        }
+
+        private void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (EmailsListBox.SelectedItem is Message selectedEmail)
+            {
+                SubjectTextBlock.Text = selectedEmail.Subject;
+                SenderTextBlock.Text = selectedEmail.Sender.EmailAddress.Address;
+                DateTextBlock.Text = selectedEmail.ReceivedDateTime?.ToString("g");
+
+                BodyWebBrowser.NavigateToString(selectedEmail.Body.Content);
+
+                EmailDetailsGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                EmailDetailsGrid.Visibility = Visibility.Collapsed;
+            }
+
         }
     }
 }
