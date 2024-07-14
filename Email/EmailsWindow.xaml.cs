@@ -35,12 +35,11 @@ namespace Email
             try
             {
                 // Obtener los mensajes de correo electrónico
-                var messagePage = await _graphClient.Me.Messages
+                var messagePage = await _graphClient.Me.MailFolders["Inbox"].Messages
                     .GetAsync((config) =>
                     {
                         config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime" };
                         config.QueryParameters.Top = 20;
-                        config.QueryParameters.Filter = "singleValueExtendedProperties/Any(ep:isDraft eq false and folder/id ne 'deleteditems')";
                     });
 
                 List<string> emailSubjects = new List<string>();
