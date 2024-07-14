@@ -16,12 +16,13 @@
         <!-- Email list -->
         <ListBox x:Name="EmailsListBox" Grid.Column="0" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                 SelectionChanged="EmailsListBox_SelectionChanged">
+                 SelectionChanged="EmailsListBox_SelectionChanged"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="0,5">
                         <TextBlock Text="{Binding Sender.EmailAddress.Name}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Subject}" FontStyle="Italic"/>
+                        <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" FontStyle="Italic"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
