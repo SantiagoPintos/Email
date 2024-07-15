@@ -75,7 +75,7 @@ namespace Email
             }
         }
 
-        private void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmailsListBox.SelectedItem is Message selectedEmail)
             {
@@ -102,15 +102,35 @@ namespace Email
                     }
                 }
 
+
                 BodyWebView.NavigateToString(selectedEmail.Body.Content);
+                await MarkEmailAsRead(selectedEmail);
 
                 EmailDetailsGrid.Visibility = Visibility.Visible;
+
+                
             }
             else
             {
                 EmailDetailsGrid.Visibility = Visibility.Collapsed;
             }
 
+        }
+
+        private async Task MarkEmailAsRead(Message email)
+        {
+            try
+            {
+                if(email.IsRead==true) return;
+                email.IsRead = true;
+
+                var result  = await _graphClient.Me.Messages[email.Id]
+                    .PatchAsync(email);
+            }
+            catch (ServiceException ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
         }
     }
 }
