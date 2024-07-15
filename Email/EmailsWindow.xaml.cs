@@ -55,6 +55,7 @@ namespace Email
                     .GetAsync((config) =>
                     {
                         config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body", "attachments" };
+                        config.QueryParameters.Expand = new[] { "attachments " };
                         config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
                         config.QueryParameters.Top = 50;
                     });
@@ -74,13 +75,32 @@ namespace Email
             }
         }
 
-        private void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmailsListBox.SelectedItem is Message selectedEmail)
             {
                 SubjectTextBlock.Text = selectedEmail.Subject;
                 SenderTextBlock.Text = selectedEmail.Sender.EmailAddress.Address;
                 DateTextBlock.Text = selectedEmail.ReceivedDateTime?.ToString("g");
+
+                //Replace CID with base64 content
+                if(selectedEmail.Attachments != null)
+                {
+                    foreach(var attachment in selectedEmail.Attachments)
+                    {
+                        if (attachment is FileAttachment fileAttachment)
+                        {
+                            if (!string.IsNullOrEmpty(fileAttachment.ContentId))
+                            {
+                                string base64content = Convert.ToBase64String(fileAttachment.ContentBytes);
+                                string mimeType = fileAttachment.ContentType;
+                                string dataUri = $"data:{mimeType};base64,{base64content}";
+                                
+                                selectedEmail.Body.Content = selectedEmail.Body.Content.Replace($"cid:{fileAttachment.ContentId}", dataUri);
+                            }
+                        }
+                    }
+                }
 
                 BodyWebView.NavigateToString(selectedEmail.Body.Content);
 
