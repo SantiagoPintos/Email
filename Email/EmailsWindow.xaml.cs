@@ -42,6 +42,8 @@ namespace Email
             BodyWebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             BodyWebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
             BodyWebView.CoreWebView2.Settings.IsScriptEnabled = false;
+            //TODO: img src
+            BodyWebView.CoreWebView2.Settings.AreDevToolsEnabled = true;
         }
 
         private async void LoadEmails()
