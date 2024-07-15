@@ -40,7 +40,7 @@ namespace Email
             await BodyWebView.EnsureCoreWebView2Async(null);
             BodyWebView.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             BodyWebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
-            BodyWebView.CoreWebView2.Settings.AreHostObjectsAllowed = false;
+            BodyWebView.CoreWebView2.Settings.AreHostObjectsAllowed = true;
             BodyWebView.CoreWebView2.Settings.IsScriptEnabled = false;
         }
 
@@ -52,7 +52,7 @@ namespace Email
                 var messagePage = await _graphClient.Me.MailFolders["Inbox"].Messages
                     .GetAsync((config) =>
                     {
-                        config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body" };
+                        config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body", "attachments" };
                         config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
                         config.QueryParameters.Top = 50;
                     });
