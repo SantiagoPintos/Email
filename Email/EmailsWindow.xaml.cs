@@ -75,7 +75,7 @@ namespace Email
             }
         }
 
-        private async void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void EmailsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (EmailsListBox.SelectedItem is Message selectedEmail)
             {
