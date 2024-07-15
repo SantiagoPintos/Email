@@ -21,7 +21,7 @@ namespace Email
     {
         private GraphServiceClient _clientApp;
         private static string _clientId;
-        private static string[] _scopes = { "User.Read", "Mail.ReadWrite" };
+        private static string[] _scopes = { "User.Read", "Mail.ReadWrite", "Mail.Send" };
 
         public MainWindow()
         {

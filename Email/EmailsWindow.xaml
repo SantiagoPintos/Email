@@ -34,13 +34,23 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" x:Name="SubjectTextBlock" FontSize="18" FontWeight="Bold" Margin="10,10,10,5"/>
             <TextBlock Grid.Row="1" x:Name="SenderTextBlock" FontStyle="Italic" Margin="10,0,10,5"/>
             <TextBlock Grid.Row="2" x:Name="DateTextBlock" Margin="10,0,10,10"/>
-            <wv2:WebView2 Grid.Row="3" x:Name="BodyWebView" Margin="10"/>
+
+            <!-- Buttons for actions -->
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,0,10,10" HorizontalAlignment="Center">
+                <Button x:Name="MarkAsReadButton" Content="Marcar como leído" Margin="0,0,10,0" Click="MarkAsReadButton_Click"/>
+                <Button x:Name="ReplyButton" Content="Responder" Margin="0,0,10,0" Click="ReplyButton_Click"/>
+                <Button x:Name="DeleteButton" Content="Eliminar" Click="DeleteButton_Click"/>
+            </StackPanel>
+
+            <!-- WebView2 ahora está en la última fila, que se expande para llenar el espacio restante -->
+            <wv2:WebView2 Grid.Row="4" x:Name="BodyWebView" Margin="10"/>
         </Grid>
     </Grid>
 </Window>

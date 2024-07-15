@@ -1,0 +1,18 @@
+﻿<Window x:Class="Email.ComposeEmailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Reply Email" Height="450" Width="600">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" x:Name="ToTextBox" Margin="0,0,0,10" Text="Email:"/>
+        <TextBox Grid.Row="1" x:Name="SubjectTextBox" Margin="0,0,0,10" Text="Subject"/>
+        <TextBox Grid.Row="2" x:Name="BodyTextBox" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <Button Grid.Row="3" Content="Send" Click="SendButton_Click" HorizontalAlignment="Right" Margin="0,10,0,0" Padding="10,5"/>
+    </Grid>
+</Window>

@@ -106,15 +106,60 @@ namespace Email
                 BodyWebView.NavigateToString(selectedEmail.Body.Content);
                 await MarkEmailAsRead(selectedEmail);
 
-                EmailDetailsGrid.Visibility = Visibility.Visible;
+                MarkAsReadButton.IsEnabled = !selectedEmail.IsRead.GetValueOrDefault();
+                ReplyButton.IsEnabled = true;
+                DeleteButton.IsEnabled = true;
 
-                
+                EmailDetailsGrid.Visibility = Visibility.Visible;
             }
             else
             {
                 EmailDetailsGrid.Visibility = Visibility.Collapsed;
             }
 
+        }
+
+        private async void MarkAsReadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EmailsListBox.SelectedItem is Message selectedEmail)
+            {
+                await MarkEmailAsRead(selectedEmail);
+                selectedEmail.IsRead = true;
+                EmailsListBox.Items.Refresh();
+                MarkAsReadButton.IsEnabled = false; 
+            }
+        }
+
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EmailsListBox.SelectedItem is Message selectedEmail)
+            {
+                var composeWindow = new ComposeEmailWindow(_graphClient, selectedEmail);
+                composeWindow.Owner = this;
+                composeWindow.ShowDialog();
+            }
+        }
+
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EmailsListBox.SelectedItem is Message selectedEmail)
+            {
+                try
+                {
+                    await _graphClient.Me.Messages[selectedEmail.Id]
+                        .DeleteAsync();
+
+                    _emails.Remove(selectedEmail);
+                    EmailsListBox.ItemsSource = null;
+                    EmailsListBox.ItemsSource = _emails;
+                    EmailDetailsGrid.Visibility = Visibility.Collapsed;
+                    MessageBox.Show("Deleted!");
+                }
+                catch (ServiceException ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
         }
 
         private async Task MarkEmailAsRead(Message email)

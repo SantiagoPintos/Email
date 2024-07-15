@@ -7,11 +7,17 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ComposeEmailWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EmailsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="ComposeEmailWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="EmailsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
