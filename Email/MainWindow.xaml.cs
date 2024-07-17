@@ -26,6 +26,7 @@ namespace Email
         public MainWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _clientId = App.Configuration["client_id"];
         }
 
