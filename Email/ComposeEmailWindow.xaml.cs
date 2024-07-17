@@ -22,17 +22,17 @@ namespace Email
     {
         private GraphServiceClient _graphClient;
         private string _originalMessageId;
+        private enum emailType { New, Reply, Forward };
+        private emailType _emailType;
         public ComposeEmailWindow(GraphServiceClient graphClient, Message originalMessage)
         {
             InitializeComponent();
             _graphClient = graphClient;
-            _originalMessageId = originalMessage.Id;
-
-            ToTextBox.Text = originalMessage.Sender.EmailAddress.Address;
-            SubjectTextBox.Text = $"RE: {originalMessage.Subject}";
-
-            string cleanedContent = CleanHtmlContent(originalMessage.Body.Content);
-            BodyTextBox.Text = $"\n\n--- Mensaje Original ---\n{cleanedContent}";
+                _originalMessageId = originalMessage.Id;
+                ToTextBox.Text = originalMessage.Sender.EmailAddress.Address;
+                SubjectTextBox.Text = $"RE: {originalMessage.Subject}";
+                string cleanedContent = CleanHtmlContent(originalMessage.Body.Content);
+                BodyTextBox.Text = $"\n\n--- Mensaje Original ---\n{cleanedContent}";
         }
 
         private async void SendButton_Click(object sender, RoutedEventArgs e)
