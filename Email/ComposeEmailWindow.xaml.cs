@@ -28,11 +28,18 @@ namespace Email
         {
             InitializeComponent();
             _graphClient = graphClient;
+            if (originalMessage != null)
+            {
+                _emailType = emailType.Reply;
                 _originalMessageId = originalMessage.Id;
                 ToTextBox.Text = originalMessage.Sender.EmailAddress.Address;
                 SubjectTextBox.Text = $"RE: {originalMessage.Subject}";
                 string cleanedContent = CleanHtmlContent(originalMessage.Body.Content);
                 BodyTextBox.Text = $"\n\n--- Mensaje Original ---\n{cleanedContent}";
+            } else
+            {
+                _emailType = emailType.New;
+            }
         }
 
         private async void SendButton_Click(object sender, RoutedEventArgs e)

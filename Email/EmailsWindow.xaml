@@ -13,9 +13,14 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
+        <Button Content="Compose" 
+                HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Margin="10" Padding="10,5" Click="ComposeButton_Click" />
+
         <!-- Email list -->
         <ListBox x:Name="EmailsListBox" Grid.Column="0" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Margin="10,50,10,10"
                  SelectionChanged="EmailsListBox_SelectionChanged"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>

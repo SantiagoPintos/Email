@@ -162,6 +162,13 @@ namespace Email
             }
         }
 
+        private async void ComposeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var composeWindow = new ComposeEmailWindow(_graphClient, null);
+            composeWindow.Owner = this;
+            composeWindow.ShowDialog();
+        }
+
         private async Task MarkEmailAsRead(Message email)
         {
             try
