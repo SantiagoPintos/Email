@@ -15,6 +15,7 @@ using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Graph.Me.Messages.Item.Reply;
 using System.Web;
+using Microsoft.Graph.Me.SendMail;
 
 namespace Email
 {
@@ -46,33 +47,70 @@ namespace Email
         {
             try
             {
-                var requestBody = new ReplyPostRequestBody
+                if (_emailType == emailType.Reply)
                 {
-                    Message = new Message
+                    var requestBody = new ReplyPostRequestBody
                     {
-                        Subject = SubjectTextBox.Text,
-                        Body = new ItemBody
+                        Message = new Message
                         {
-                            ContentType = BodyType.Text,
-                            Content = BodyTextBox.Text
-                        },
-                        ToRecipients = new List<Recipient>()
-                        {
-                            new Recipient
+                            Subject = SubjectTextBox.Text,
+                            Body = new ItemBody
                             {
-                                EmailAddress = new EmailAddress
+                                ContentType = BodyType.Text,
+                                Content = BodyTextBox.Text
+                            },
+                            ToRecipients = new List<Recipient>()
+                            {
+                                new Recipient
                                 {
-                                    Address = ToTextBox.Text
+                                    EmailAddress = new EmailAddress
+                                    {
+                                        Address = ToTextBox.Text
+                                    }
                                 }
                             }
-                        }
-                    },
-                };
-                
+                        },
+                    };
 
-                await _graphClient.Me.Messages[_originalMessageId]
-                    .Reply
-                    .PostAsync(requestBody);
+
+                    await _graphClient.Me.Messages[_originalMessageId]
+                        .Reply
+                        .PostAsync(requestBody);
+                }
+                else if (_emailType == emailType.New)
+                {
+                    var requestBody = new SendMailPostRequestBody
+                    {
+                        Message = new Message
+                        {
+                            Subject = SubjectTextBox.Text,
+                            Body = new ItemBody
+                            {
+                                ContentType = BodyType.Text,
+                                Content = BodyTextBox.Text
+                            },
+                            ToRecipients = new List<Recipient>()
+                            {
+                                new Recipient
+                                {
+                                    EmailAddress = new EmailAddress
+                                    {
+                                        Address = ToTextBox.Text
+                                    }
+                                }
+                            }
+                        },
+                        SaveToSentItems = true
+                    };
+
+                    await _graphClient.Me
+                        .SendMail
+                        .PostAsync(requestBody);
+                } 
+                else
+                {
+                    throw new Exception("Something went wrong");
+                }
 
                 this.Close();
             }
