@@ -19,9 +19,6 @@ using Microsoft.Web.WebView2.Wpf;
 
 namespace Email
 {
-    /// <summary>
-    /// Lógica de interacción para EmailsWindow.xaml
-    /// </summary>
     public partial class EmailsWindow : Window
     {
         private GraphServiceClient _graphClient;
@@ -50,7 +47,7 @@ namespace Email
         {
             try
             {
-                // Obtener los mensajes de correo electrónico
+                // Get outlook emails
                 var messagePage = await _graphClient.Me.MailFolders["Inbox"].Messages
                     .GetAsync((config) =>
                     {
@@ -62,8 +59,6 @@ namespace Email
 
                 _emails = messagePage.Value.ToList();
                 EmailsListBox.ItemsSource = _emails;
-
-                // Verificar si la lista tiene elementos
                 if (_emails.Count <= 0)
                 {
                     MessageBox.Show("No se encontraron correos electrónicos.");

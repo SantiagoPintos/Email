@@ -36,7 +36,7 @@ namespace Email
                 ToTextBox.Text = originalMessage.Sender.EmailAddress.Address;
                 SubjectTextBox.Text = $"RE: {originalMessage.Subject}";
                 string cleanedContent = CleanHtmlContent(originalMessage.Body.Content);
-                BodyTextBox.Text = $"\n\n--- Mensaje Original ---\n{cleanedContent}";
+                BodyTextBox.Text = $"\n\n--- Original message ---\n{cleanedContent}";
             } else
             {
                 _emailType = emailType.New;
