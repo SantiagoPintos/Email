@@ -27,7 +27,7 @@ namespace Email
             _clientId = App.Configuration["client_id"];
         }
 
-        private async void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginWithOutlookButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {

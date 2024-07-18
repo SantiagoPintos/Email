@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Email" Height="450" Width="800">
     <Grid>
-        <Button Name="LoginButton" Content="Login with Outlook" HorizontalAlignment="Center" VerticalAlignment="Center" Click="LoginButton_Click"/>
+        <Button Name="LoginOutlookButton" Content="Login with Outlook" HorizontalAlignment="Center" VerticalAlignment="Center" Click="LoginWithOutlookButton_Click"/>
     </Grid>
 </Window>
