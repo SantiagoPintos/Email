@@ -23,6 +23,7 @@ namespace Email
     {
         private GraphServiceClient _graphClient;
         private List<Message> _emails;
+        private List<MailFolder> _categories;
 
         public EmailsWindow(GraphServiceClient graphClient)
         {
@@ -30,6 +31,7 @@ namespace Email
             _graphClient = graphClient;
             InitializeWebView();
             LoadOutlookEmails();
+            LoadOutlookCategories();
         }
 
         private async void InitializeWebView()
@@ -63,6 +65,22 @@ namespace Email
                 {
                     MessageBox.Show("No se encontraron correos electrónicos.");
                 }
+            }
+            catch (ServiceException ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private async void LoadOutlookCategories()
+        {
+            try
+            {
+                var categories = await _graphClient.Me
+                    .MailFolders
+                    .GetAsync();
+                _categories = categories.Value.ToList();
+                FoldersListBox.ItemsSource = _categories;
             }
             catch (ServiceException ex)
             {
@@ -111,6 +129,29 @@ namespace Email
             else
             {
                 EmailDetailsGrid.Visibility = Visibility.Collapsed;
+            }
+
+        }
+
+        //Email folders
+        private async void FoldersListBox_SelectionChanged(object  sender, SelectionChangedEventArgs e)
+        {
+            if(FoldersListBox.SelectedItem is OutlookCategory selectedCategory)
+            {
+                try
+                {
+                    var messages = await _graphClient.Me.MailFolders[selectedCategory.Id]
+                        .Messages
+                        .GetAsync();
+
+                    _emails = null;
+                    _emails = messages.Value.ToList();
+                    EmailsListBox.ItemsSource = _emails;
+                }
+                catch (ServiceException ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
             }
 
         }

@@ -22,7 +22,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" FontSize="15" Margin="0,5"/>
+                    <TextBlock Text="{Binding DisplayName}" FontSize="15" Margin="0,5"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
