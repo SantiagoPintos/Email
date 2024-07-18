@@ -156,6 +156,7 @@ namespace Email
 
                     _emails = messages.Value.ToList();
                     EmailsListBox.ItemsSource = _emails;
+                    CategoryTitle.Text = selectedCategory.DisplayName;
                 }
                 catch (ServiceException ex)
                 {
