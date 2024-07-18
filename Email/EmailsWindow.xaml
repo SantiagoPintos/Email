@@ -11,15 +11,29 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
+        <ListBox x:Name="FoldersListBox" Grid.Column="0" 
+                 SelectionChanged="FoldersListBox_SelectionChanged"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Margin="10,50,10,10"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" FontSize="15" Margin="0,5"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
         <Button Content="Compose" 
                 HorizontalAlignment="Right" VerticalAlignment="Top" 
-                Margin="10" Padding="10,5" Click="ComposeButton_Click" />
+                Margin="10" Padding="10,5" Click="ComposeButton_Click" 
+                Grid.Column="1"/>
 
         <!-- Email list -->
-        <ListBox x:Name="EmailsListBox" Grid.Column="0" 
+        <ListBox x:Name="EmailsListBox" Grid.Column="1" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  Margin="10,50,10,10"
                  SelectionChanged="EmailsListBox_SelectionChanged"
@@ -35,7 +49,7 @@
         </ListBox>
 
         <!-- Email details -->
-        <Grid Grid.Column="1" x:Name="EmailDetailsGrid" Visibility="Collapsed">
+        <Grid Grid.Column="2" x:Name="EmailDetailsGrid" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
