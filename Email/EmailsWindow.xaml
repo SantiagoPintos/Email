@@ -6,7 +6,7 @@
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         xmlns:local="clr-namespace:Email"
         mc:Ignorable="d"
-        Title="EmailsWindow" Height="600" Width="1000"
+        Title="Email" Height="600" Width="1000"
         WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
