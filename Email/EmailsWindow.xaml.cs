@@ -81,6 +81,10 @@ namespace Email
                     .GetAsync();
                 _categories = categories.Value.ToList();
                 FoldersListBox.ItemsSource = _categories;
+                if(_categories.Count <= 0)
+                {
+                    MessageBox.Show("We couldn't find any categories.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
             catch (ServiceException ex)
             {
