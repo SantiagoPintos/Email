@@ -32,7 +32,7 @@ namespace Email
             InitializeComponent();
             _graphClient = graphClient;
             InitializeWebView();
-            LoadEmails();
+            LoadOutlookEmails();
         }
 
         private async void InitializeWebView()
@@ -46,7 +46,7 @@ namespace Email
             BodyWebView.CoreWebView2.Settings.AreDevToolsEnabled = true;
         }
 
-        private async void LoadEmails()
+        private async void LoadOutlookEmails()
         {
             try
             {
