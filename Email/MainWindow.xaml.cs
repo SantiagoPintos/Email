@@ -32,28 +32,48 @@ namespace Email
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
             try
             {
                 if(string.IsNullOrEmpty(_clientId)) throw new Exception("Something went wrong: ClientID");
 
-                // Configura las credenciales del navegador interactivo
-                var interactiveBrowserCredential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
+                await Task.Run(async () =>
                 {
-                    ClientId = _clientId,
-                    RedirectUri = new Uri("http://localhost")
+                    // Configure interactive browser credentials
+                    var interactiveBrowserCredential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
+                    {
+                        ClientId = _clientId,
+                        RedirectUri = new Uri("http://localhost")
+                    });
+
+                    // Initialize the Microsoft Graph client with the credentials
+                    _clientApp = new GraphServiceClient(interactiveBrowserCredential, _scopes);
+
+                    //Await a silent token request to ensure login
+                    await interactiveBrowserCredential.AuthenticateAsync(cts.Token);
+
                 });
 
-                // Inicializa el cliente de Microsoft Graph con las credenciales
-                _clientApp = new GraphServiceClient(interactiveBrowserCredential, _scopes);
+                Dispatcher.Invoke(() =>
+                {
+                    // Navigate to the emails window
+                    EmailsWindow emailsWindow = new EmailsWindow(_clientApp);
+                    emailsWindow.Show();
+                    this.Close();
+                });
+            }
+            catch (OperationCanceledException)
+            {
 
-                // Navega a la ventana de correos electrónicos
-                EmailsWindow emailsWindow = new EmailsWindow(_clientApp);
-                emailsWindow.Show();
-                this.Close();
+               Dispatcher.Invoke(() => MessageBox.Show("Login canceled"));
+            }
+            catch (MsalClientException ex) when (ex.ErrorCode == "authentication_canceled")
+            {
+                Dispatcher.Invoke(() => MessageBox.Show("Authentication was canceled"));
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                Dispatcher.Invoke(() => MessageBox.Show($"Error: {ex.Message}"));
             }
         }
     }
