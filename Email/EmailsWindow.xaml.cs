@@ -138,17 +138,22 @@ namespace Email
         }
 
         //Email folders
-        private async void FoldersListBox_SelectionChanged(object  sender, SelectionChangedEventArgs e)
+        private async void FoldersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(FoldersListBox.SelectedItem is OutlookCategory selectedCategory)
+            if(FoldersListBox.SelectedItem is MailFolder selectedCategory)
             {
                 try
                 {
                     var messages = await _graphClient.Me.MailFolders[selectedCategory.Id]
                         .Messages
-                        .GetAsync();
+                        .GetAsync((config) =>
+                        {
+                            config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body", "attachments" };
+                            config.QueryParameters.Expand = new[] { "attachments " };
+                            config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
+                            config.QueryParameters.Top = 50;
+                        });
 
-                    _emails = null;
                     _emails = messages.Value.ToList();
                     EmailsListBox.ItemsSource = _emails;
                 }
