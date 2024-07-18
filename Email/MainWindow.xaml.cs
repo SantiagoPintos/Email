@@ -64,15 +64,15 @@ namespace Email
             }
             catch (OperationCanceledException)
             {
-               Dispatcher.Invoke(() => MessageBox.Show("Login canceled", "Error", MessageBoxButton.OK));
+               Dispatcher.Invoke(() => MessageBox.Show("Login canceled", "Error", MessageBoxButton.OK, MessageBoxImage.Error));
             }
             catch (MsalClientException ex) when (ex.ErrorCode == "authentication_canceled")
             {
-                Dispatcher.Invoke(() => MessageBox.Show("Authentication was canceled", "Error", MessageBoxButton.OK));
+                Dispatcher.Invoke(() => MessageBox.Show("Authentication was canceled", "Error", MessageBoxButton.OK, MessageBoxImage.Error));
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() => MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK));
+                Dispatcher.Invoke(() => MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error));
             }
         }
     }
