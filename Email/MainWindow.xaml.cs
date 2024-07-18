@@ -32,7 +32,6 @@ namespace Email
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
             try
             {
                 if(string.IsNullOrEmpty(_clientId)) throw new Exception("Something went wrong: ClientID");
@@ -48,10 +47,6 @@ namespace Email
 
                     // Initialize the Microsoft Graph client with the credentials
                     _clientApp = new GraphServiceClient(interactiveBrowserCredential, _scopes);
-
-                    //Await a silent token request to ensure login
-                    await interactiveBrowserCredential.AuthenticateAsync(cts.Token);
-
                 });
 
                 Dispatcher.Invoke(() =>
