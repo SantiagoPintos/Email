@@ -107,6 +107,7 @@ namespace Email
                 await MarkEmailAsRead(selectedEmail);
 
                 MarkAsReadButton.IsEnabled = !selectedEmail.IsRead.GetValueOrDefault();
+                MarkAsUnreadButton.IsEnabled = selectedEmail.IsRead.GetValueOrDefault();
                 ReplyButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
 
@@ -117,6 +118,17 @@ namespace Email
                 EmailDetailsGrid.Visibility = Visibility.Collapsed;
             }
 
+        }
+
+        private async void MarkAsUnreadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EmailsListBox.SelectedItem is Message selectedEmail)
+            {
+                await MarkOutlookEmailAsUnread(selectedEmail);
+                selectedEmail.IsRead = false;
+                EmailsListBox.Items.Refresh();
+                MarkAsUnreadButton.IsEnabled = false;
+            }
         }
 
         private async void MarkAsReadButton_Click(object sender, RoutedEventArgs e)
@@ -177,6 +189,22 @@ namespace Email
                 email.IsRead = true;
 
                 var result  = await _graphClient.Me.Messages[email.Id]
+                    .PatchAsync(email);
+            }
+            catch (ServiceException ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private async Task MarkOutlookEmailAsUnread(Message email)
+        {
+            try
+            {
+                if (email.IsRead == false) return;
+                email.IsRead = false;
+
+                var result = await _graphClient.Me.Messages[email.Id]
                     .PatchAsync(email);
             }
             catch (ServiceException ex)
