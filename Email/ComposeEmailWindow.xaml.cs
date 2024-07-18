@@ -47,6 +47,11 @@ namespace Email
         {
             try
             {
+                if(string.IsNullOrEmpty(ToTextBox.Text) || string.IsNullOrEmpty(SubjectTextBox.Text) || string.IsNullOrEmpty(BodyTextBox.Text))
+                {
+                    MessageBox.Show("Please fill all the fields", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 if (_emailType == emailType.Reply)
                 {
                     var requestBody = new ReplyPostRequestBody
