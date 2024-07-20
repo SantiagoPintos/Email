@@ -39,7 +39,9 @@ namespace Email
                     var interactiveBrowserCredential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
                     {
                         ClientId = _clientId,
-                        RedirectUri = new Uri("http://localhost")
+                        RedirectUri = new Uri("http://localhost"),
+                        AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+                        TenantId = "common"
                     });
 
                     // Initialize the Microsoft Graph client with the credentials
