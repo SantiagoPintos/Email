@@ -9,10 +9,20 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Row="0" x:Name="ToTextBox" Margin="0,0,0,10" Text="Email:"/>
-        <TextBox Grid.Row="1" x:Name="SubjectTextBox" Margin="0,0,0,10" Text="Subject"/>
-        <TextBox Grid.Row="2" x:Name="BodyTextBox" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-        <Button Grid.Row="3" Content="Send" Click="SendButton_Click" HorizontalAlignment="Right" Margin="0,10,0,0" Padding="10,5"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="To:" VerticalAlignment="Center" Margin="0,0,0,10"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="ToTextBox" Margin="0,0,0,10" TextWrapping="NoWrap"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Subject:" VerticalAlignment="Center" Margin="0,0,0,10"/>
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="SubjectTextBox" Margin="0,0,0,10" TextWrapping="NoWrap"/>
+        
+        <TextBox Grid.Row="2" Grid.ColumnSpan="2" x:Name="BodyTextBox" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Content="Send" Click="SendButton_Click" HorizontalAlignment="Right" Margin="0,10,0,0" Padding="10,5"/>
     </Grid>
 </Window>
+

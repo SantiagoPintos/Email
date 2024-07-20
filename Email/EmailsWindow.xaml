@@ -73,9 +73,50 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Margin="10">
-                <TextBlock x:Name="CategoryTitle" Text="Inbox" FontSize="20" Foreground="Black" VerticalAlignment="Center"/>
-            </StackPanel>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" x:Name="CategoryTitle" Text="Inbox" FontSize="20" Foreground="Black" VerticalAlignment="Center"/>
+
+                <ToggleButton Grid.Column="2" x:Name="OptionsButton" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Grid>
+                                            <Viewbox Stretch="Uniform">
+                                                <Canvas Width="24" Height="24">
+                                                    <Path Data="M10,18H14V16H10V18M3,6V8H21V6H3M6,13H18V11H6V13Z" 
+                                                            Fill="Black"/>
+                                                </Canvas>
+                                            </Viewbox>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+                
+
+                <Popup IsOpen="{Binding IsChecked, ElementName=OptionsButton}" 
+                    PlacementTarget="{Binding ElementName=OptionsButton}" 
+                    Placement="Bottom" 
+                    StaysOpen="False">
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+                        <StackPanel>
+                            <Button Content="New email" Padding="10,5" Click="ComposeButton_Click"/>
+                            <Button Content="Option 1" Padding="10,5"/>
+                            <Button Content="Option 2" Padding="10,5"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
 
             <ListBox x:Name="EmailsListBox" Grid.Row="1"
                 Background="Transparent" BorderThickness="0"
