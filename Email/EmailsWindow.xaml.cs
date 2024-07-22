@@ -31,7 +31,7 @@ namespace Email
             _graphClient = graphClient;
             InitializeWebView();
             LoadOutlookEmails();
-            LoadOutlookCategories();
+            //LoadOutlookCategories();
         }
 
         private async void InitializeWebView()
