@@ -171,7 +171,30 @@ namespace Email
         {
             LoadOutlookEmails();
         }
+        //get sent
+        private async void SentButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var messages = await _graphClient.Me.MailFolders["SentItems"]
+                    .Messages
+                    .GetAsync((config) =>
+                    {
+                        config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body", "attachments" };
+                        config.QueryParameters.Expand = new[] { "attachments " };
+                        config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
+                        config.QueryParameters.Top = 50;
+                    });
 
+                _emails = messages.Value.ToList();
+                EmailsListBox.ItemsSource = _emails;
+            }
+            catch (ServiceException ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+         
         private async void MarkAsUnreadButton_Click(object sender, RoutedEventArgs e)
         {
             if (EmailsListBox.SelectedItem is Message selectedEmail)

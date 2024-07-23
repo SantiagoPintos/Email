@@ -63,7 +63,7 @@
                 </Grid>
             </Grid>
             <!-- Sent -->
-            <Grid Margin="10,10,0,0">
+            <Grid Margin="10,10,0,0" MouseDown="SentButton_Click">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
