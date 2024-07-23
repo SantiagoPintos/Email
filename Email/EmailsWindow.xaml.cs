@@ -166,6 +166,12 @@ namespace Email
 
         }
 
+        //get inbox
+        private async void InboxButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadOutlookEmails();
+        }
+
         private async void MarkAsUnreadButton_Click(object sender, RoutedEventArgs e)
         {
             if (EmailsListBox.SelectedItem is Message selectedEmail)
@@ -257,6 +263,11 @@ namespace Email
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
