@@ -109,12 +109,6 @@ namespace Email
 
                 BodyWebView.NavigateToString(selectedEmail.Body.Content);
                 await MarkEmailAsRead(selectedEmail);
-
-                MarkAsReadButton.IsEnabled = !selectedEmail.IsRead.GetValueOrDefault();
-                MarkAsUnreadButton.IsEnabled = selectedEmail.IsRead.GetValueOrDefault();
-                ReplyButton.IsEnabled = true;
-                DeleteButton.IsEnabled = true;
-
                 EmailDetailsGrid.Visibility = Visibility.Visible;
             }
             else
@@ -189,7 +183,6 @@ namespace Email
                 await MarkOutlookEmailAsUnread(selectedEmail);
                 selectedEmail.IsRead = false;
                 EmailsListBox.Items.Refresh();
-                MarkAsUnreadButton.IsEnabled = false;
             }
         }
 
@@ -200,7 +193,6 @@ namespace Email
                 await MarkEmailAsRead(selectedEmail);
                 selectedEmail.IsRead = true;
                 EmailsListBox.Items.Refresh();
-                MarkAsReadButton.IsEnabled = false; 
             }
         }
 

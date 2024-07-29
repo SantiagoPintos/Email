@@ -325,10 +325,71 @@
             <wv2:WebView2 Grid.Row="1" x:Name="BodyWebView" Margin="20,0,20,20"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20">
-                <Button Content="Unread" x:Name="MarkAsUnreadButton" Click="MarkAsUnreadButton_Click" Background="Transparent" Foreground="Black" BorderThickness="0" Margin="5,0"/>
-                <Button Content="Read" x:Name="MarkAsReadButton" Click="MarkAsReadButton_Click" Background="Transparent" Foreground="Black" BorderThickness="0" Margin="5,0"/>
-                <Button Content="Reply" x:Name="ReplyButton" Click="ReplyButton_Click" Background="Transparent" Foreground="Black" BorderThickness="0" Margin="5,0"/>
-                <Button Content="🗑" x:Name="DeleteButton" Click="DeleteButton_Click" Background="Transparent" Foreground="Black" BorderThickness="0" Margin="5,0"/>
+                <Grid Margin="10,0,0,0" MouseDown="ReplyButton_Click">
+                    <Grid.ToolTip>
+                        <TextBlock>Mark as unread</TextBlock>
+                    </Grid.ToolTip>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Background="Transparent">
+                        <Viewbox Stretch="Uniform" Margin="10,-2,10,0">
+                            <Canvas Width="35" Height="35">
+                                <Rectangle Width="35" Height="35" Fill="Transparent"/>
+                                <Path Data="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z" 
+                                    Fill="#7f7f87"
+                                    Width="35"
+                                    Height="35"
+                                    Stretch="Uniform"
+                                />
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+                </Grid>
+                <!-- Unread button-->
+                <Grid Margin="10,0,0,0" MouseDown="ReplyButton_Click">
+                    <Grid.ToolTip>
+                        <TextBlock>Reply</TextBlock>
+                    </Grid.ToolTip>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Background="Transparent">
+                        <Viewbox Stretch="Uniform" Margin="10,-2,10,0">
+                            <Canvas Width="35" Height="35">
+                                <Rectangle Width="35" Height="35" Fill="Transparent"/>
+                                <Path Data="M232,200a8,8,0,0,1-16,0,88.1,88.1,0,0,0-88-88H51.31l34.35,34.34a8,8,0,0,1-11.32,11.32l-48-48a8,8,0,0,1,0-11.32l48-48A8,8,0,0,1,85.66,61.66L51.31,96H128A104.11,104.11,0,0,1,232,200Z" 
+                                    Fill="#7f7f87"
+                                    Width="35"
+                                    Height="35"
+                                    Stretch="Uniform"
+                                />
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+                </Grid>
+                <!-- Delete button-->
+                <Grid Margin="10,0,0,0" MouseDown="DeleteButton_Click">
+                    <Grid.ToolTip>
+                        <TextBlock>Delete</TextBlock>
+                    </Grid.ToolTip>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Background="Transparent">
+                        <Viewbox Stretch="Uniform" Margin="10,0,10,0">
+                            <Canvas Width="35" Height="35">
+                                <Rectangle Width="35" Height="35" Fill="Transparent"/>
+                                <Path Data="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z" 
+                                    Fill="#7f7f87"
+                                    Width="35"
+                                    Height="30"
+                                    Stretch="Uniform"
+                                />
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+                </Grid>
             </StackPanel>
         </Grid>
     </Grid>
