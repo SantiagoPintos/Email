@@ -11,11 +11,22 @@ namespace Email
         private GraphServiceClient _graphClient;
         private List<Message> _emails;
         private List<MailFolder> _categories;
+        private EmailSyncService _emailSyncService;
+        private EmailDbContext _dbContext;
 
         public EmailsWindow(GraphServiceClient graphClient)
         {
             InitializeComponent();
             _graphClient = graphClient;
+            
+            var options = new DbContextOptionsBuilder<EmailDbContext>()
+                .UseSqlite("Data Source=emails.db")
+                .Options;
+            _dbContext = new EmailDbContext(options);
+            _dbContext.Database.EnsureCreated();
+            
+            _emailSyncService = new EmailSyncService(_dbContext, _graphClient);
+            
             InitializeWebView();
             LoadOutlookEmails();
             //LoadOutlookCategories();
@@ -36,22 +47,24 @@ namespace Email
         {
             try
             {
-                // Get outlook emails
-                var messagePage = await _graphClient.Me.MailFolders["Inbox"].Messages
-                    .GetAsync((config) =>
-                    {
-                        config.QueryParameters.Select = new[] { "subject", "sender", "receivedDateTime", "body", "attachments" };
-                        config.QueryParameters.Expand = new[] { "attachments " };
-                        config.QueryParameters.Orderby = new[] { "receivedDateTime desc" };
-                        config.QueryParameters.Top = 50;
-                    });
-
-                _emails = messagePage.Value.ToList();
-                EmailsListBox.ItemsSource = _emails;
-                if (_emails.Count <= 0)
+                // First try to load from local database
+                var localEmails = await _emailSyncService.GetLocalEmails();
+                if (localEmails.Any())
                 {
-                    MessageBox.Show("No se encontraron correos electrónicos.");
+                    _emails = localEmails.Select(e => new Message
+                    {
+                        Id = e.Id,
+                        Subject = e.Subject,
+                        Sender = new Recipient { EmailAddress = new EmailAddress { Address = e.SenderEmail } },
+                        ReceivedDateTime = e.ReceivedDateTime,
+                        Body = new ItemBody { Content = e.BodyContent, ContentType = Enum.Parse<BodyType>(e.BodyType) },
+                        IsRead = e.IsRead
+                    }).ToList();
+                    EmailsListBox.ItemsSource = _emails;
                 }
+                
+                // Sync with server in background
+                await _emailSyncService.SyncEmailsFromServer();
             }
             catch (ServiceException ex)
             {
@@ -242,8 +255,11 @@ namespace Email
                 if(email.IsRead==true) return;
                 email.IsRead = true;
 
-                var result  = await _graphClient.Me.Messages[email.Id]
+                var result = await _graphClient.Me.Messages[email.Id]
                     .PatchAsync(email);
+                
+                // Update local database
+                await _emailSyncService.UpdateEmailReadStatus(email.Id, true);
             }
             catch (ServiceException ex)
             {
